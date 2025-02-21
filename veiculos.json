@@ -1,0 +1,13 @@
+[
+	[
+		{
+			"id": 1,
+			"tipo": "Carro",
+			"marca": "Honda",
+			"modelo": "Civic",
+			"placa": "4833-531",
+			"valor_diario": 100.0,
+			"situacao": 2
+		}
+	]
+]
