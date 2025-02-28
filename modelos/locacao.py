@@ -66,11 +66,23 @@ class Locacao:
         return self.__data_locacao
 
     def __str__(self):
+        data_requisicao = self.get_data_requisicao()
+        if data_requisicao is not None:
+            data_requisicao = data_requisicao.strftime("%Y-%m-%d %H:%M:%S")
+        else:
+            data_requisicao = "--"
+
+        data_locacao = self.get_data_locacao()
+        if data_locacao is not None:
+            data_locacao = data_locacao.strftime("%Y-%m-%d %H:%M:%S")
+        else:
+            data_locacao = "--"
+
         return (
             f"ID: {self.get_id()} - ID Veículo: {self.get_id_veiculo()} - ID Usuário: {self.get_id_usuario()} "
             f"- Duração: {self.get_duracao()} dias - Valor: {self.get_valor()} "
-            f"- Data Requisição: {self.get_data_requisicao().strftime('%Y-%m-%d %H:%M:%S')} "
-            f"- Data Locação: {self.get_data_locacao().strftime('%Y-%m-%d %H:%M:%S')}"
+            f"- Data Requisição: {data_requisicao} "
+            f"- Data Locação: {data_locacao}"
         )
 
 
@@ -80,16 +92,17 @@ class CRUD_Locacao(CRUD):
         cls.dados = []
 
         for obj in cls.objetos:
+            data_requisicao = obj.get_data_requisicao()
+            if data_requisicao is not None:
+                data_requisicao = data_requisicao.strftime("%Y-%m-%d %H:%M:%S")
+            else:
+                data_requisicao = "--"
+
             data_locacao = obj.get_data_locacao()
             if data_locacao is not None:
                 data_locacao = data_locacao.strftime("%Y-%m-%d %H:%M:%S")
             else:
                 data_locacao = "--"
-
-            print("\n" * 5)
-            print(obj.get_data_requisicao())
-            print(type(obj.get_data_requisicao()))
-            print(obj.get_data_requisicao().strftime("%Y-%m-%d %H:%M:%S"))
 
             cls.dados.append(
                 {
@@ -98,9 +111,7 @@ class CRUD_Locacao(CRUD):
                     "id_usuario": obj.get_id_usuario(),
                     "duracao": obj.get_duracao(),
                     "valor": obj.get_valor(),
-                    "data_requisicao": obj.get_data_requisicao().strftime(
-                        "%Y-%m-%d %H:%M:%S"
-                    ),
+                    "data_requisicao": data_requisicao,
                     "data_locacao": data_locacao,
                 }
             )
@@ -116,6 +127,14 @@ class CRUD_Locacao(CRUD):
         cls.limpar()
 
         for obj in dados:
+            data_requisicao = obj["data_requisicao"]
+            if data_requisicao != "--":
+                data_requisicao = datetime.strptime(
+                    data_requisicao, "%Y-%m-%d %H:%M:%S"
+                )
+            else:
+                data_requisicao = None
+
             data_locacao = obj["data_locacao"]
             if data_locacao != "--":
                 data_locacao = datetime.strptime(data_locacao, "%Y-%m-%d %H:%M:%S")
@@ -129,7 +148,7 @@ class CRUD_Locacao(CRUD):
                     obj["id_usuario"],
                     obj["duracao"],
                     obj["valor"],
-                    obj["data_requisicao"],
+                    data_requisicao,
                     data_locacao,
                 )
             )

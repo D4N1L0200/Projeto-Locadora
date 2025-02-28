@@ -80,7 +80,6 @@ class CadastroVeiculosUI:
             situacao = st.selectbox(
                 "Informe a nova situação do veículo",
                 ["DISPONIVEL", "REQUISITADO", "LOCADO"],
-                index=op.get_situacao().value,
             )
             if st.button("Atualizar"):
                 try:

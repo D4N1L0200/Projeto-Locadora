@@ -29,7 +29,7 @@ class CRUD(ABC):
         return cls.objetos
 
     @classmethod
-    def listar_por_id(cls, id):
+    def listar_id(cls, id):
         for o in cls.objetos:
             if o.get_id() == id:
                 return o

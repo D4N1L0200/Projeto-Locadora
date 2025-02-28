@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 from view import View
+from modelos.situacao import Situacao
 import time
 from datetime import datetime
 
@@ -31,6 +32,18 @@ class CadastroLocacoesUI:
         else:
             dic = []
             for locacao in locacoes:
+                data_requisicao = locacao.get_data_requisicao()
+                if data_requisicao is not None:
+                    data_requisicao = data_requisicao.strftime("%Y-%m-%d %H:%M:%S")
+                else:
+                    data_requisicao = None
+
+                data_locacao = locacao.get_data_locacao()
+                if data_locacao is not None:
+                    data_locacao = data_locacao.strftime("%Y-%m-%d %H:%M:%S")
+                else:
+                    data_locacao = None
+
                 dic.append(
                     {
                         "id": locacao.get_id(),
@@ -38,12 +51,8 @@ class CadastroLocacoesUI:
                         "id_usuario": locacao.get_id_usuario(),
                         "duracao": locacao.get_duracao(),
                         "valor": locacao.get_valor(),
-                        "data_requisicao": locacao.get_data_requisicao().strftime(
-                            "%Y-%m-%d %H:%M:%S"
-                        ),
-                        "data_locacao": locacao.get_data_locacao().strftime(
-                            "%Y-%m-%d %H:%M:%S"
-                        ),
+                        "data_requisicao": data_requisicao,
+                        "data_locacao": data_locacao,
                     }
                 )
             df = pd.DataFrame(dic)
@@ -66,7 +75,25 @@ class CadastroLocacoesUI:
             op = st.selectbox("Requisição pendente", requisicoes)
             if st.button("Confirmar"):
                 try:
-                    View.locacao_confirmar(op.get_id())
+                    View.locacao_atualizar(
+                        op.get_id(),
+                        op.get_id_veiculo(),
+                        op.get_id_usuario(),
+                        op.get_duracao(),
+                        op.get_valor(),
+                        op.get_data_requisicao(),
+                        datetime.now(),
+                    )
+                    veiculo = View.veiculo_listar_id(op.get_id_veiculo())
+                    View.veiculo_atualizar(
+                        veiculo.get_id(),
+                        veiculo.get_tipo(),
+                        veiculo.get_marca(),
+                        veiculo.get_modelo(),
+                        veiculo.get_placa(),
+                        veiculo.get_valor_diario(),
+                        Situacao.LOCADO,
+                    )
                     st.success("Locação confirmada com sucesso.")
                     time.sleep(2)
                     st.rerun()

@@ -1,13 +1,1 @@
-[
-	[
-		{
-			"id": 1,
-			"tipo": "Carro",
-			"marca": "Honda",
-			"modelo": "Civic",
-			"placa": "4833-531",
-			"valor_diario": 100.0,
-			"situacao": 2
-		}
-	]
-]
+[{"id": 1, "tipo": "Carro", "marca": "Chevrolet", "modelo": "Onix", "placa": "13B4-5XO", "valor_diario": 150.0, "situacao": 1}, {"id": 2, "tipo": "Carro", "marca": "Honda", "modelo": "Civic", "placa": "34DA-D3J", "valor_diario": 200.0, "situacao": 1}]
